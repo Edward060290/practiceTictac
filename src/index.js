@@ -23,6 +23,9 @@ class Board extends React.Component {
 
   handleClick(i) {
     const squares = this.state.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
     squares[i] = this.state.xIsNext ? 'x': 'o';
     this.setState({
       squares: squares,
@@ -38,7 +41,13 @@ class Board extends React.Component {
   );
 }
 render() {
-  const status = 'Next player: ' + (this.state.iIsNext ? 'x' : 'o');
+  const winner = calculateWinner(this.state.squares);
+  let status;
+  if (winner) {
+    status = 'Winner: ' + winner;
+  } else {
+  status = 'Next player: ' + (this.state.iIsNext ? 'x' : 'o');
+}
 
   return (
   <div>
@@ -62,9 +71,42 @@ render() {
       {this.renderSquare(8)}
     </div>
   </div>
-    );
-  }
+
+  );
 }
+}
+  function calculateWinner(square) {
+    const lines = [
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+      [0, 1, 2],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (square[a] && square[a] === square[b] && square[a] === square[c]) {
+        return square[a];
+      }
+    }
+    return null;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ======================================================
